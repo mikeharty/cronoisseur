@@ -9,7 +9,7 @@ cronoisseur "weekdays at 07:15" --comment "Morning sync" --dry-run -- ./sync.sh
 ## Features
 - Understands phrases like `daily at 05:30`, `weekdays at 07:15`, `every 15 minutes`, or raw cron.
 - Supports optional comments, environment variables, and JSON output for scripting.
-- Auto-detects your crontab's path and write to it (optional).
+- Auto-detects your crontab's path and writes to it (optional).
 
 ## Quick start
 ```bash
@@ -24,7 +24,7 @@ cronoisseur "every 30 minutes" --dry-run -- env COMMAND=backup /usr/local/bin/ba
 ## Usage
 - The first argument is the schedule expression (natural language or raw cron).
 - The remaining positional arguments form the command to run; everything after the command starts is treated as part of the command.
-- Helpful flags: ``--comment <text>`, `--write`, `--file <path>` (overrides the auto-detected cron path), `--dry-run`, `--json`, `--env <key=value>` (repeatable), `--no-color`, `--list-patterns`.
+- Helpful flags: `--comment <text>`, `--write`, `--file <path>` (overrides the auto-detected cron path), `--dry-run`, `--json`, `--env <key=value>` (repeatable), `--no-color`, `--list-patterns`.
 
 ## Examples
 ```bash
