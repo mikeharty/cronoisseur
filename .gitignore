@@ -1,0 +1,10 @@
+.DS_Store
+Thumbs.dbc
+/.idea/
+/.vscode/
+*.code-workspace
+
+/target/
+
+
+
