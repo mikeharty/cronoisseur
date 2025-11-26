@@ -17,16 +17,24 @@ jobs:
         include:
           - os: ubuntu-latest
             asset: linux-x86_64
+            target: x86_64-unknown-linux-gnu
           - os: macos-latest
             asset: macos-x86_64
+            target: x86_64-apple-darwin
+          - os: macos-latest
+            asset: macos-aarch64
+            target: aarch64-apple-darwin
           - os: windows-latest
             asset: windows-x86_64
+            target: x86_64-pc-windows-msvc
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Install toolchain
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.target }}
 
       - name: Cache cargo
         uses: actions/cache@v4
@@ -41,20 +49,22 @@ jobs:
           restore-keys: ${{ runner.os }}-cargo-
 
       - name: Build release binary
-        run: cargo build --locked --release
+        run: cargo build --locked --release --target ${{ matrix.target }}
 
       - name: Package artifact
         shell: bash
         env:
           ASSET: ${{ matrix.asset }}
+          TARGET: ${{ matrix.target }}
         run: |
           BIN=cronoisseur
           EXT=""
           if [[ "$RUNNER_OS" == "Windows" ]]; then
             EXT=".exe"
           fi
+          ARTIFACT_DIR="target/${TARGET}/release"
           mkdir -p artifacts
-          cp "target/release/${BIN}${EXT}" "artifacts/${BIN}-${ASSET}${EXT}"
+          cp "${ARTIFACT_DIR}/${BIN}${EXT}" "artifacts/${BIN}-${ASSET}${EXT}"
           tar -czf "artifacts/${BIN}-${ASSET}.tar.gz" -C artifacts "${BIN}-${ASSET}${EXT}"
 
       - name: Upload artifact
